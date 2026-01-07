@@ -1,21 +1,35 @@
 """
-Data Processing Service for Crypto/Stock Time-Series.
-Transforms raw JSON/CSV into structured DataFrame, adds indicators and saves processed data.
+Data Processing Service for Stock Time-Series.
+Validates raw data, adds indicators, and saves processed CSV.
 """
 
+from pathlib import Path
 import pandas as pd
-import os
 
 
-def process_stock_data(raw_file_path: str, processed_file_path: str):
+REQUIRED_COLUMNS = {"Date", "Close"}
+
+
+def validate_raw_data(df: pd.DataFrame) -> None:
     """
-    Reads raw stock CSV/JSON, processes it, adds simple indicators, and saves processed CSV.
+    Validates that raw data contains required columns.
 
-    Args:
-        raw_file_path (str): Path to the raw data file (CSV/JSON)
-        processed_file_path (str): Path to save processed data
+    Raises:
+        ValueError: if required columns are missing
     """
-    # Read raw data
+    missing = REQUIRED_COLUMNS - set(df.columns)
+
+    if missing:
+        raise ValueError(
+            f"Raw data is missing required columns: {missing}. "
+            f"Available columns: {list(df.columns)}"
+        )
+
+
+def process_stock_data(raw_file_path: Path, processed_file_path: Path) -> None:
+    """
+    Reads raw stock CSV/JSON, validates, processes it, and saves processed CSV.
+    """
     if raw_file_path.suffix == ".csv":
         df = pd.read_csv(raw_file_path)
     elif raw_file_path.suffix == ".json":
@@ -23,19 +37,19 @@ def process_stock_data(raw_file_path: str, processed_file_path: str):
     else:
         raise ValueError("Unsupported file type. Only CSV or JSON allowed.")
 
-    # Ensure timestamp column is datetime
-    df['Date'] = pd.to_datetime(df['Date'], utc=True)
+    # Data contract validation
+    validate_raw_data(df)
 
-    # Sort by timestamp ascending
-    df = df.sort_values('Date').reset_index(drop=True)
+    # Normalize and sort
+    df["Date"] = pd.to_datetime(df["Date"], utc=True)
+    df = df.sort_values("Date").reset_index(drop=True)
 
-    # Add basic indicators
-    df['price_change'] = df['Close'].pct_change() * 100  # % change
-    df['sma_5'] = df['Close'].rolling(window=5).mean()  # Simple Moving Average 5
-    df['sma_20'] = df['Close'].rolling(window=20).mean()  # Simple Moving Average 20
+    # Indicators
+    df["price_change_pct"] = df["Close"].pct_change() * 100
+    df["sma_5"] = df["Close"].rolling(window=5).mean()
+    df["sma_20"] = df["Close"].rolling(window=20).mean()
 
-    # Save processed data
-    os.makedirs(os.path.dirname(processed_file_path), exist_ok=True)
+    processed_file_path.parent.mkdir(parents=True, exist_ok=True)
     df.to_csv(processed_file_path, index=False)
 
     print(f"Processed data saved to {processed_file_path}")
