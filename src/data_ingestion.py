@@ -14,13 +14,6 @@ import pandas as pd
 import yfinance as yf
 from datetime import datetime
 
-# Directory to save raw data
-RAW_DATA_DIR = os.path.join(os.path.dirname(__file__), '../../data/raw')
-
-# Ensure the directory exists
-os.makedirs(RAW_DATA_DIR, exist_ok=True)
-
-
 def fetch_stock_data(ticker: str, period: str = "1y") -> pd.DataFrame:
     """
     Fetch historical stock data for a given ticker symbol.
@@ -37,26 +30,10 @@ def fetch_stock_data(ticker: str, period: str = "1y") -> pd.DataFrame:
     return data
 
 
-def save_raw_data(df: pd.DataFrame, ticker: str):
+def save_raw_data(df: pd.DataFrame, file_path):
     """
-    Save raw DataFrame to CSV with timestamp in filename.
-
-    Args:
-        df (pd.DataFrame): Data to save
-        ticker (str): Stock symbol, used in filename
+    Save raw DataFrame to CSV at the given path.
     """
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    filename = f"{ticker}_{timestamp}.csv"
-    filepath = os.path.join(RAW_DATA_DIR, filename)
-
-    df.to_csv(filepath)
-    print(f"Saved raw data for {ticker} to {filepath}")
-
-
-# Example usage
-if __name__ == "__main__":
-    tickers = ["AAPL", "GOOGL", "MSFT"]
-
-    for ticker in tickers:
-        df = fetch_stock_data(ticker, period="1y")
-        save_raw_data(df, ticker)
+    os.makedirs(os.path.dirname(file_path), exist_ok=True)
+    df.to_csv(file_path)
+    print(f"Saved raw data to {file_path}")

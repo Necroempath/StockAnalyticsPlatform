@@ -16,9 +16,9 @@ def process_stock_data(raw_file_path: str, processed_file_path: str):
         processed_file_path (str): Path to save processed data
     """
     # Read raw data
-    if raw_file_path.endswith(".csv"):
+    if raw_file_path.suffix == ".csv":
         df = pd.read_csv(raw_file_path)
-    elif raw_file_path.endswith(".json"):
+    elif raw_file_path.suffix == ".json":
         df = pd.read_json(raw_file_path)
     else:
         raise ValueError("Unsupported file type. Only CSV or JSON allowed.")
