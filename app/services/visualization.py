@@ -3,11 +3,10 @@ Visualization module for processed stock data.
 Loads processed CSV and generates basic plots.
 """
 
-from pathlib import Path
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from ..config import PROCESSED_DATA_DIR, OUTPUT_DIR
+from app.services.config import PROCESSED_DATA_DIR, OUTPUT_DIR
 
 
 def load_processed_data(filename: str) -> pd.DataFrame:
@@ -45,10 +44,3 @@ def plot_price_and_sma(df: pd.DataFrame, output_name: str):
     output_path = OUTPUT_DIR / output_name
     plt.savefig(output_path)
     plt.close()
-
-    print(f"Plot saved to {output_path}")
-
-
-if __name__ == "__main__":
-    df = load_processed_data("sample_stock.csv")
-    plot_price_and_sma(df, "price_sma.png")

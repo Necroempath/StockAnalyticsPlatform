@@ -41,4 +41,3 @@ def save_raw_data(df: pd.DataFrame, file_path):
     """
     os.makedirs(os.path.dirname(file_path), exist_ok=True)
     df.to_csv(file_path)
-    print(f"Saved raw data to {file_path}")

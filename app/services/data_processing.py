@@ -51,5 +51,3 @@ def process_stock_data(raw_file_path: Path, processed_file_path: Path) -> None:
 
     processed_file_path.parent.mkdir(parents=True, exist_ok=True)
     df.to_csv(processed_file_path, index=False)
-
-    print(f"Processed data saved to {processed_file_path}")
