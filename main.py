@@ -19,11 +19,11 @@ def run_pipeline(ticker: str):
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
     raw_path = Path("data/raw") / f"{ticker}_{timestamp}.csv"
-    processed_filename = f"{ticker}_processed.csv"
+    processed_filename = f"{ticker}_{timestamp}_processed.csv"
     processed_path = Path("data/processed") / processed_filename
 
     # 1. Ingestion
-    df_raw = fetch_stock_data(ticker, period="1y")
+    df_raw = fetch_stock_data(ticker)
     save_raw_data(df_raw, raw_path)
 
     # 2. Processing
@@ -31,7 +31,7 @@ def run_pipeline(ticker: str):
 
     # 3. Visualization
     df_processed = load_processed_data(processed_filename)
-    plot_price_and_sma(df_processed, f"{ticker}_price_sma.png")
+    plot_price_and_sma(df_processed, f"{ticker}_{timestamp}_price_sma.png")
 
 
 if __name__ == "__main__":

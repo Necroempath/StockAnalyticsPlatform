@@ -7,19 +7,14 @@ from pathlib import Path
 import pandas as pd
 import matplotlib.pyplot as plt
 
-
-# Project root = stock_analytics_platform/
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
-
-DATA_PROCESSED_DIR = PROJECT_ROOT / "data" / "processed"
-OUTPUT_DIR = PROJECT_ROOT / "output"
+from ..config import PROCESSED_DATA_DIR, OUTPUT_DIR
 
 
 def load_processed_data(filename: str) -> pd.DataFrame:
     """
     Load processed stock data from data/processed directory.
     """
-    file_path = DATA_PROCESSED_DIR / filename
+    file_path = PROCESSED_DATA_DIR / filename
 
     if not file_path.exists():
         raise FileNotFoundError(f"Processed file not found: {file_path}")

@@ -12,15 +12,20 @@ Libraries:
 import os
 import pandas as pd
 import yfinance as yf
-from datetime import datetime
+import sys
+from pathlib import Path
 
-def fetch_stock_data(ticker: str, period: str = "1y") -> pd.DataFrame:
+sys.path.append(str(Path(__file__).resolve().parent))
+from config import DEFAULT_STOCK_PERIOD
+
+period=DEFAULT_STOCK_PERIOD
+
+def fetch_stock_data(ticker: str) -> pd.DataFrame:
     """
     Fetch historical stock data for a given ticker symbol.
 
     Args:
         ticker (str): Stock symbol, e.g., 'AAPL', 'GOOGL'
-        period (str): Time period for historical data ('1y', '6mo', '1d', etc.)
 
     Returns:
         pd.DataFrame: DataFrame with historical OHLCV (Open, High, Low, Close, Volume)

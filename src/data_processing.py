@@ -5,7 +5,7 @@ Validates raw data, adds indicators, and saves processed CSV.
 
 from pathlib import Path
 import pandas as pd
-
+from config import SMA_SHORT_WINDOW, SMA_LONG_WINDOW
 
 REQUIRED_COLUMNS = {"Date", "Close"}
 
@@ -46,8 +46,8 @@ def process_stock_data(raw_file_path: Path, processed_file_path: Path) -> None:
 
     # Indicators
     df["price_change_pct"] = df["Close"].pct_change() * 100
-    df["sma_5"] = df["Close"].rolling(window=5).mean()
-    df["sma_20"] = df["Close"].rolling(window=20).mean()
+    df["sma_5"] = df["Close"].rolling(SMA_SHORT_WINDOW).mean()
+    df["sma_20"] = df["Close"].rolling(SMA_LONG_WINDOW).mean()
 
     processed_file_path.parent.mkdir(parents=True, exist_ok=True)
     df.to_csv(processed_file_path, index=False)
