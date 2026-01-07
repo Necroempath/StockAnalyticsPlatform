@@ -4,7 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from pathlib import Path
 
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 DB_PATH = PROJECT_ROOT / "data" / "stock_data.db"
 SQLALCHEMY_DATABASE_URL = f"sqlite:///{DB_PATH}"
