@@ -1,24 +1,24 @@
 # Stock Analytics Platform
 
-A Python-based data analytics platform for collecting, processing, and analyzing stock market time-series data.
+Python platform for fetching, processing, storing, and visualizing stock price data.
 
-## Project Goal
+---
 
-The goal of this project is to demonstrate practical skills in:
-- Python backend development
-- Time-series data processing
-- Working with external APIs
-- Data storage using SQLite
-- Clean project architecture and Git workflow
+## Features
 
-## Tech Stack
+- Fetch historical stock data using `yfinance`
+- Process raw CSV/JSON and calculate indicators (price change, SMA 5, SMA 20)
+- Store processed data in SQLite via SQLAlchemy
+- Generate plots of stock prices and indicators using `matplotlib`
 
-- Python
-- pandas, numpy
-- requests
-- SQLite (via SQLAlchemy)
-- matplotlib
+---
 
-## Project Status
+## Quick Start
 
-🚧 Initial setup and project structure in progress.
+```bash
+git clone https://github.com/Necroempath/StockAnalyticsPlatform.git
+cd stock_analytics_platform
+python -m venv .venv
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+python main.py
